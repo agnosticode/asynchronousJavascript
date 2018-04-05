@@ -1,53 +1,61 @@
-document.getElementById('button').addEventListener('click',loadData);
+document.getElementById('button1').addEventListener('click',loadCustomer);
+document.getElementById('button2').addEventListener('click',loadCustomers);
 
-function loadData(){
-  //Create an XHR Object
+
+//Load Single Customer
+function loadCustomer(){
   const xhr = new XMLHttpRequest();
-  // console.log('ReadyState:', xhr.readyState);
+  
+  xhr.open('GET','customer.json',true);
 
-  //Open
-  xhr.open('GET','data.txt',true);
-  // console.log('ReadyState:', xhr.readyState);
-
-  //Optional-Used for spinners/loaders
-  xhr.onprogress=function(){
-    console.log('ReadyState:', xhr.readyState);//3
-  }
-
-  //Newer
-  xhr.onload=function(){
-    console.log('ReadyState:', xhr.readyState); //Already at 4 
+  xhr.onload = function(){
     if(this.status===200){
       // console.log(this.responseText);
-      document.getElementById('output').innerHTML=`<h1>${this.responseText}</h2>`;
+
+      const customer = JSON.parse(this.responseText);
+      const output = `
+        <ul>
+        <li>ID: ${customer.id}</li>
+        <li>Name: ${customer.name}</li>
+        <li>Company: ${customer.company}</li>
+        <li>Phone: ${customer.phone}</li>
+        </ul>
+      `
+      document.getElementById('customer').innerHTML=output;
     }
   }
 
-  //If Something Goes Wrong
-  xhr.onerror=function(){
-    console.log('Request Error');
+  xhr.send();
+}
+
+
+//Load Customers
+function loadCustomers(){
+  const xhr = new XMLHttpRequest();
+  
+  xhr.open('GET','customers.json',true);
+
+  xhr.onload = function(){
+    if(this.status===200){
+      // console.log(this.responseText);
+
+      const customers = JSON.parse(this.responseText);
+
+      let output = '';
+      customers.forEach(function(customer){
+        output += `
+        <ul>
+        <li>ID: ${customer.id}</li>
+        <li>Name: ${customer.name}</li>
+        <li>Company: ${customer.company}</li>
+        <li>Phone: ${customer.phone}</li>
+        </ul>
+      `
+      });
+
+      document.getElementById('customers').innerHTML=output;
+    }
   }
 
-  //Older
-  // xhr.onreadystatechange = function(){
-  //   console.log('ReadyState:', xhr.readyState); //Goes through 2,3 and4
-  //   if (this.status===200 && this.readyState===4){
-  //     console.log(this.responseText);
-  //   } 
-  // }
-  
-
   xhr.send();
-
-  //readyState values
-  // 0: request not initialized
-  // 1: server connection established
-  // 2: request received
-  // 3: processing request
-  // 4: request finished and response is ready
-
-  // HTTP Statuses
-  //   200:"OK"
-  //   403:"Forbidden"
-  //   404:"Not Found"
 }
