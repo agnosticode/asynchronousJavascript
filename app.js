@@ -1,31 +1,45 @@
-document.querySelector('.get-jokes').addEventListener('click',getJokes);
+const posts = [
+    {title:'Post One',body:'This is post one'},
+    {title:'Post Two',body:'This is post two'}
+]
 
-function getJokes(e){
-    const number = document.getElementById('number').value;
-    
-    const xhr = new XMLHttpRequest();
+//DOING THINGS SYNCHRONOUSLY
 
-    xhr.open('GET',`http://api.icndb.com/jokes/random/${number}`,true);
+// function createPost(post){
+//     setTimeout(function(){
+//         posts.push(post);
+//     }, 2000);
+// }
 
-    xhr.onload = function(){
-        if(this.status===200){
-            const response = JSON.parse(this.responseText);
-            console.log(response)
+// function getPost(){
+//     setTimeout(function(){
+//         let output = '';
+//         posts.forEach(function(post){
+//             output += `<li>${post.title}</li>`
+//         });
+//         document.body.innerHTML=output; 
+//     },1000);
+// }
 
-            let output='';
+// createPost({title:'Post Three', body:'This is post three'});    
+// getPost();
 
-            if(response.type==='success'){
-                response.value.forEach(function(joke){
-                    output += `<li>${joke.joke}</li>`;
-                });
-            }else{
-                output+=`<li>Something Went Wrong</li>`;    
-            }
-            document.querySelector('.jokes').innerHTML=output;
-        }
-    }
-
-    xhr.send();
-
-    e.preventDefault();
+//DOING THINGS ASYNCHRONOUSLY
+function createPost(post, callback){
+    setTimeout(function(){
+        posts.push(post);
+        callback();
+    }, 2000);
 }
+
+function getPost(){
+    setTimeout(function(){
+        let output = '';
+        posts.forEach(function(post){
+            output += `<li>${post.title}</li>`
+        });
+        document.body.innerHTML=output; 
+    },1000);
+}
+
+createPost({title:'Post Three', body:'This is post three'},getPost); 
