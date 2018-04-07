@@ -1,54 +1,43 @@
-document.getElementById('button1').addEventListener('click',getText);
-document.getElementById('button2').addEventListener('click',getJSON);
-document.getElementById('button3').addEventListener('click',getExternal);
-
-
-//Get Local Text File Data
-function getText(){
-    fetch('test.txt')
-    .then(function(res){
-        return res.text();
-    })
-    .then(function(data){
-        console.log(data);
-        document.getElementById('output').innerHTML=data;
-    }).catch(function(err){
-        console.log(err);
-    });
+//Simple Function
+const sayHello = function(){
+    console.log('Hello');
 }
 
-//Get Local Json Data
-function getJSON(){
-    fetch('posts.json')
-    .then(function(res){
-        return res.json()
-    })
-    .then(function(data){
-        console.log(data);
-        let output='';
-        data.forEach(function(post){
-            output+=`<li>${post.title}</li>`
-        });
-        document.getElementById('output').innerHTML=output;
-    }).catch(function(err){
-        console.log(err);
-    })
+//Arrow Function
+const sayHello = () => {
+    console.log("This is Arrow Function");
 }
 
-//Get Data Form External API
-function getExternal(){
-    fetch('https://api.github.com/users')
-    .then(function(res){
-        return res.json();
-    })
-    .then(function(data){
-        console.log(data);
-        let output='';
-        data.forEach(function(user){
-            output+= `<li>${user.login}</li>`
-        });
-        document.getElementById('output').innerHTML=output;
-    }).catch(function(err){
-        console.log(err);
-    });
+//In Single Line--Don't need braces
+const sayHello = () => console.log("This is single line Arrow Function"); 
+
+//Return String
+const sayHello = () => "Hello";
+
+//Same As Above
+const sayHello = function(){
+    return "Hello";
 }
+
+//Problem-- Returning Object Literal---Solve--Wrap curly braces in Pranthesis
+const sayHello = () => ({ msg:"Hellow"});
+
+//Arguments
+const sayHello = (name) => console.log(`Hello ${name}`);   
+
+//Same as above---Single param does not need prathesis
+const sayHello = name => console.log(`Hello ${name}`);
+
+// sayHello("Satinder");
+
+const users = ['Nathen','John','William'];
+
+//Using Simple Function
+const nameLengths = users.map(function(name){
+    return name.length;
+})
+
+//Using Arrow Function
+const nameLengths = users.map(name => name.length);
+
+// console.log(nameLengths);
